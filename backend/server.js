@@ -39,11 +39,20 @@ console.log('Using Mock Database for demo (MongoDB connection disabled)');
 console.log('Loading routes...');
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/analysis', require('./routes/analysisRoutes'));
-// app.use('/api/recommendations', require('./routes/recommendationRoutes'));
 
-app.get('/', (req, res) => {
-    res.send('Skin Log API is running...');
-});
+// Serve Frontend in Production
+if (process.env.NODE_ENV === 'production') {
+    // Set static folder
+    app.use(express.static(path.join(__dirname, '../frontend/dist')));
+
+    app.get('*', (req, res) => {
+        res.sendFile(path.resolve(__dirname, '..', 'frontend', 'dist', 'index.html'));
+    });
+} else {
+    app.get('/', (req, res) => {
+        res.send('Skin Log API is running...');
+    });
+}
 
 console.log('Starting server...');
 app.listen(PORT, () => {
