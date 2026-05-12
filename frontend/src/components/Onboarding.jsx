@@ -22,8 +22,9 @@ const Onboarding = ({ onAuthSuccess }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
+            const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
             const endpoint = isLogin ? '/api/auth/login' : '/api/auth/signup';
-            const res = await axios.post(`http://localhost:5000${endpoint}`, formData);
+            const res = await axios.post(`${apiUrl}${endpoint}`, formData);
             localStorage.setItem('token', res.data.token);
             onAuthSuccess(res.data.user);
         } catch (err) {

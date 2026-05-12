@@ -29,7 +29,8 @@ const SkinAnalyzer = ({ user, selectedProblems = [], onAnalysisComplete }) => {
             }
 
             try {
-                const res = await axios.post('http://localhost:5000/api/analysis/upload', formData);
+                const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+                const res = await axios.post(`${apiUrl}/api/analysis/upload`, formData);
                 const responseAnalysis = res.data.analysis || {};
                 const highlightAreas = [
                     { left: '12%', top: '22%' },
